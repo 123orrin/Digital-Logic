@@ -2,7 +2,7 @@
 
 `timescale 1ns/1ns
 
-module part1(input logic [3:0] a, b, input logic c_in, output logic [3:0] s, c_out);
+module four_bit_fa(input logic [3:0] a, b, input logic c_in, output logic [3:0] s, c_out);
 	fa add1(a[0], b[0], c_in, s[0], c_out[0]);
 	fa add2(a[1], b[1], c_out[0], s[1], c_out[1]);
 	fa add3(a[2], b[2], c_out[1], s[2], c_out[2]);
