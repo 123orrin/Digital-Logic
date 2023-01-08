@@ -1,44 +1,44 @@
-# Program that counts consecutive 1’s given multiple lists
+# Program that counts consecutive 1’s in a word given multiple words
 # Returns the highest number of 1's
 
 .global _start
 .text
 _start:
-	la a1, LIST # Load the memory address into a1
-	addi a0, zero, 0 # Register a0 will hold the result
+la s2, LIST # Load the memory address into s2
+addi s10, zero, 0 # Final result
+addi s1, zero, -1 # For comparison (test if reached end of list)
+
+LOOP_LIST:
+	lw a0, 0(s2) # Put curr address into subroutine argument var
+	beq a0, s1, END # If reached end of list, end program
 	jal ONES
+	addi s2, s2, 4 # Increment address to next word in list
+	bgt a0, s10, CHANGE
+	b LOOP_LIST
+CHANGE:
 	mv s10, a0
-END:
-	ebreak
-ONES: 
+	b LOOP_LIST
+
+ONES:
 	addi sp, sp, -4
 	sw ra, 0(sp)
-	addi t0, zero, -1
-NEW_WORD:
-	lw a2, 0(a1)
-	beq a2, t0, GO_BACK
-	mv a3, a2
-	addi a4, zero, 0
+	add t2, zero, a0 # Put word into temp register
+	mv a0, zero # Will store subroutine output
 LOOP:
-	srli a2, a2, 1 # Perform SHIFT, followed by AND
-	and a2, a2, a3
-	addi a4, a4, 1 # Count the string lengths so far
-	bnez a2, LOOP # Loop until data contains no more 1’s
-			
-	addi a1, a1, 4
-	bgt a4, a0, UPDATE_a0
-	j NEW_WORD
-
-UPDATE_a0: 
-	mv a0, a4
-	j NEW_WORD
-
-GO_BACK: 
+	beqz t2, DONE # Loop until data contains no more 1’s
+	srli t3, t2, 1 # Perform SHIFT, followed by AND
+	and t2, t2, t3
+	addi a0, a0, 1 # Count the string lengths so far
+	b LOOP
+DONE:
 	lw ra, 0(sp)
 	addi sp, sp, 4
 	jr ra
 
+END:
+	ebreak
+
 .global LIST
 .data
 LIST:
-	.word 0x103fe00f, 100, -1
+.word 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, -1
