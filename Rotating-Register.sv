@@ -2,7 +2,7 @@
 
 `timescale 1ns / 1ns
 
-module part3(input logic clock, reset, ParallelLoadn, RotateRight, ASRight, input logic [3:0] Data_IN, output logic [3:0] Q);
+module rotate_reg(input logic clock, reset, ParallelLoadn, RotateRight, ASRight, input logic [3:0] Data_IN, output logic [3:0] Q);
 	mux_dff ff3(clock, reset, ParallelLoadn, RotateRight, Q[2], (ASRight ? Q[3] : Q[0]), Data_IN[3], Q[3]);
 	mux_dff ff2(clock, reset, ParallelLoadn, RotateRight, Q[1], Q[3], Data_IN[2], Q[2]);
 	mux_dff ff1(clock, reset, ParallelLoadn, RotateRight, Q[0], Q[2], Data_IN[1], Q[1]);
